@@ -1,0 +1,16 @@
+const path = require('path');
+
+const express = require('express');
+
+const Controller = require('../controllers/all_controllers');
+
+const router = express.Router();
+
+router.get('/', Controller.getCustomers);
+router.get('/updatecustomer', Controller.getEditCustomer);
+router.post('/savecustomer', Controller.postSaveCustomer);
+router.get('/addcustomer', Controller.getAddCustomer);
+router.post('/addcustomer', Controller.postAddCustomer);
+router.get('/deletecustomer', Controller.getDeleteCustomer);
+
+module.exports = router;

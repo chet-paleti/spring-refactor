@@ -1,0 +1,92 @@
+const Customer = require("../models/customer");
+const qstring = require('querystring')
+
+exports.getCustomers = (req, res, next) => {
+
+ // res.render('customers')
+
+ Customer.getCustomers()
+ .then(([rows, fieldData]) => {
+   //console.log(rows[0])
+   res.render('customers', {
+     customers: rows,
+     qstring: qstring
+   });
+ })
+ .catch(err => console.log(err));
+};
+
+exports.getEditCustomer = (req, res, next) => {
+    let customer = {
+        id : req.query.id,
+        fname : req.query.first_name,
+        lname : req.query.last_name,
+        email : req.query.email
+    }
+    res.render('editcustomer',{
+        edit_customer : customer
+    })
+
+}
+
+exports.postSaveCustomer = (req, res, next) => {
+
+    // res.render('customers')
+    const id = req.body.id
+    const fname = req.body.fname
+    const lname = req.body.lname
+    const email = req.body.email
+    
+    const editedCustomer = new Customer(id,fname,lname,email)
+
+   
+  editedCustomer
+  .update()
+  .then(() => {
+    res.redirect('/');
+  })
+  .catch(err => console.log(err));
+
+};
+
+   exports.getAddCustomer = (req, res, next) => {
+    
+    res.render('addcustomer')
+
+   }
+
+    exports.postAddCustomer = (req, res, next) => {
+
+      // res.render('customers')
+      const id = 0
+      const fname = req.body.fname
+      const lname = req.body.lname
+      const email = req.body.email
+      
+      const newCustomer = new Customer(id,fname,lname,email)
+  
+     
+      newCustomer
+      .add()
+      .then(() => {
+        res.redirect('/');
+      })
+      .catch(err => console.log(err));
+  
+     };
+
+     exports.getDeleteCustomer = (req, res, next) => {
+
+      // res.render('customers')
+      const id = req.query.cust_id
+     
+       
+      Customer
+      .delete(id)
+      .then(() => {
+        res.redirect('/');
+      })
+      .catch(err => console.log(err));
+  
+     };
+
